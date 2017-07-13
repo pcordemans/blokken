@@ -245,7 +245,7 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'javascript', 'php', 'python', 'dart', 'lua', 'xml'];
+Code.TABS_ = ['blocks', 'javascript'];
 
 Code.selected = 'blocks';
 
@@ -318,39 +318,7 @@ Code.renderContent = function() {
       code = prettyPrintOne(code, 'js');
       content.innerHTML = code;
     }
-  } else if (content.id == 'content_python') {
-    code = Blockly.Python.workspaceToCode(Code.workspace);
-    content.textContent = code;
-    if (typeof prettyPrintOne == 'function') {
-      code = content.textContent;
-      code = prettyPrintOne(code, 'py');
-      content.innerHTML = code;
-    }
-  } else if (content.id == 'content_php') {
-    code = Blockly.PHP.workspaceToCode(Code.workspace);
-    content.textContent = code;
-    if (typeof prettyPrintOne == 'function') {
-      code = content.textContent;
-      code = prettyPrintOne(code, 'php');
-      content.innerHTML = code;
-    }
-  } else if (content.id == 'content_dart') {
-    code = Blockly.Dart.workspaceToCode(Code.workspace);
-    content.textContent = code;
-    if (typeof prettyPrintOne == 'function') {
-      code = content.textContent;
-      code = prettyPrintOne(code, 'dart');
-      content.innerHTML = code;
-    }
-  } else if (content.id == 'content_lua') {
-    code = Blockly.Lua.workspaceToCode(Code.workspace);
-    content.textContent = code;
-    if (typeof prettyPrintOne == 'function') {
-      code = content.textContent;
-      code = prettyPrintOne(code, 'lua');
-      content.innerHTML = code;
-    }
-  }
+  } 
 };
 
 /**
