@@ -23,10 +23,17 @@
  */
 'use strict';
 
+
+
 /**
  * Create a namespace for the application.
  */
 var Code = {};
+
+/**
+  *
+  */
+Code.interpreter = null;
 
 /**
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
@@ -469,24 +476,76 @@ Code.initLanguage = function() {
 
 /**
  * Execute the user's code.
- * Just a quick and dirty eval.  Catch infinite loops.
  */
 Code.runJS = function() {
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = '  checkTimeout();\n';
-  var timeouts = 0;
-  var checkTimeout = function() {
-    if (timeouts++ > 1000000) {
-      throw MSG['timeout'];
-    }
-  };
-  var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-  try {
-    eval(code);
-  } catch (e) {
-    alert(MSG['badCode'].replace('%1', e));
-  }
+  Code.parseCode();
+  Code.stepCode();
 };
+
+/**
+  * Acorn interpreter
+  */
+  Code.initApi = function(interpreter, scope) {
+        // Add an API function for the alert() block.
+        var wrapper = function(text) {
+          text = text ? text.toString() : '';
+          return interpreter.createPrimitive(alert(text));
+        };
+        interpreter.setProperty(scope, 'alert',
+            interpreter.createNativeFunction(wrapper));
+
+        // Add an API function for the prompt() block.
+        var wrapper = function(text) {
+          text = text ? text.toString() : '';
+          return interpreter.createPrimitive(prompt(text));
+        };
+        interpreter.setProperty(scope, 'prompt',
+            interpreter.createNativeFunction(wrapper));
+
+        // Add an API function for highlighting blocks.
+        var wrapper = function(id) {
+          id = id ? id.toString() : '';
+          return interpreter.createPrimitive(highlightBlock(id));
+        };
+        interpreter.setProperty(scope, 'highlightBlock',
+            interpreter.createNativeFunction(wrapper));
+      };
+
+Code.highlightPause = false;
+
+Code.highlightBlock = function (id) {
+        Code.workspace.highlightBlock(id);
+        Code.highlightPause = true;
+      };
+
+Code.parseCode = function() {
+        // Generate JavaScript code and parse it.
+
+        var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
+
+        Code.interpreter = new Interpreter(code, Code.initApi);
+        Code.highlightPause = false;
+        Code.workspace.highlightBlock(null);
+      };
+
+Code.stepCode = function() {
+        try {
+          var ok = Code.interpreter.step();
+        } finally {
+          if (!ok) {
+            // Program complete, no more code to execute.
+            Code.workspace.highlightBlock(null);
+            return;
+          }
+        }
+        if (Code.highlightPause) {
+          // A block has been highlighted.  Pause execution here.
+          Code.highlightPause = false;
+        } else {
+          // Keep executing until a highlight statement is reached.
+          Code.stepCode();
+        }
+      }
 
 /**
  * Discard all blocks from the workspace.
