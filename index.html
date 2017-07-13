@@ -9,6 +9,7 @@
   <script src="blockly/src/blocks_compressed.js"></script>
   <script src="blockly/src/javascript_compressed.js"></script>
   <script src="blockly/src/code.js"></script>
+
 </head>
 <body>
   <table width="100%" height="100%">
@@ -36,6 +37,12 @@
             <td class="tabmax">
               <button id="trashButton" class="notext" title="...">
                 <img src='blockly/media/1x1.gif' class="trash icon21">
+              </button>
+              <button id="saveButton" class="notext" title="Save">
+                <img src='blockly/media/1x1.gif' class="link icon21">
+              </button>
+              <button id="openButton" class="notext" title="Open">
+                <img src='blockly/media/1x1.gif' class="link icon21">
               </button>
               <button id="linkButton" class="notext" title="...">
                 <img src='blockly/media/1x1.gif' class="link icon21">
@@ -225,7 +232,7 @@
           </shadow>
         </value>
       </block>
-    </category>    
+    </category>
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>

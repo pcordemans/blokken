@@ -406,6 +406,8 @@ Code.init = function() {
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
   Code.bindClick('runButton', Code.runJS);
+  Code.bindClick('saveButton', Code.saveBlocks);
+  Code.bindClick('openButton', Code.openFromDisk);
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
   if ('BlocklyStorage' in window) {
@@ -472,6 +474,33 @@ Code.initLanguage = function() {
   document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];
+};
+
+/**
+  * Save blocks
+  */
+Code.saveBlocks = function() {
+  var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+  var domToPretty = Blockly.Xml.domToPrettyText(xml);
+  Code.download(domToPretty, "example.xml");
+};
+
+Code.download = function(text, filename) {
+	if (typeof filename === "undefined") {
+		filename = false;
+	};
+	var pom = document.createElement('a');
+	pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+	if (filename) {
+		pom.setAttribute('download', filename);
+	}
+	pom.click();
+};
+
+/**
+  * Open from disk
+  */
+Code.openFromDisk = function() {
 };
 
 /**
