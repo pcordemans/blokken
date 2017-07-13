@@ -65,6 +65,13 @@ h1 {
   margin-right: 5px;
 }
 
+p {
+  font-weight: normal;
+  font-size: 100%;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
 /* Tabs */
 #tabRow>td {
   border: 1px solid #ccc;
