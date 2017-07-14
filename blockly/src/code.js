@@ -501,6 +501,22 @@ Code.download = function(text, filename) {
   * Open from disk
   */
 Code.openFromDisk = function() {
+  var pom = document.createElement('input');
+
+	pom.setAttribute('type', 'file');
+  pom.setAttribute('accept', '.xml');
+  pom.addEventListener('change', function(){
+    var file = this.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      var text = reader.result;
+      var xml = Blockly.Xml.textToDom(text);
+      Code.workspace.clear();
+      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    };
+      reader.readAsText(file);}, false);
+	pom.click();
 };
 
 /**
