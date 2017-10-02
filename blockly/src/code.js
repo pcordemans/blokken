@@ -392,7 +392,8 @@ Code.init = function() {
 
   // Add to reserved word list: Local variables in execution environment (runJS)
   // and the infinite loop detection function.
-  Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
+  Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+  Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout,highlightBlock');
 
   Code.loadBlocks('');
 
@@ -520,17 +521,17 @@ Code.openFromDisk = function() {
 	pom.click();
 };
 
-Code.stepJS = function() {
-  Code.parseCode();
+Code.stepJS = function(){
+  if(!Code.interpreter)Code.parseCode();
+  Code.highlightPause = false;
   Code.stepCode();
 };
 
 
 /**
- * Continuously run the code, the program is saved to recover from an infinite loop
+ * Continuously run the code
  */
 Code.runJS = function() {
-  Code.saveBlocks();
   Code.parseCode();
   Code.runCode();
 };
@@ -558,7 +559,7 @@ Code.runJS = function() {
         // Add an API function for highlighting blocks.
         var wrapper = function(id) {
           id = id ? id.toString() : '';
-          return interpreter.createPrimitive(highlightBlock(id));
+          return interpreter.createPrimitive(Code.highlightBlock(id));
         };
         interpreter.setProperty(scope, 'highlightBlock',
             interpreter.createNativeFunction(wrapper));
@@ -586,23 +587,20 @@ Code.runCode = function() {
 }
 
 Code.stepCode = function() {
+  do {
         try {
-          var ok = Code.interpreter.step();
+          var hasMoreCode = Code.interpreter.step();
         } finally {
-          if (!ok) {
-            // Program complete, no more code to execute.
-            Code.workspace.highlightBlock(null);
+          if (!hasMoreCode) {
+            Code.interpreter = null;
             return;
           }
         }
-        if (Code.highlightPause) {
-          // A block has been highlighted.  Pause execution here.
-          Code.highlightPause = false;
-        } else {
-          // Keep executing until a highlight statement is reached.
-          Code.stepCode();
-        }
-      }
+        // Keep executing until a highlight statement is reached,
+        // or the code completes or errors.
+      } while (hasMoreCode && !Code.highlightPause);
+};
+
 
 /**
  * Discard all blocks from the workspace.

@@ -37,10 +37,18 @@ button.secondary {
   background-color: #61dd39;
   color: #fff;
 }
+button.stepper {
+  border: 1px solid #ddab39;
+  background-color: #ddab39;
+  color: #fff;
+}
 button.primary>img {
   opacity: 1;
 }
 button.secondary>img {
+  opacity: 1;
+}
+button.stepper>img {
   opacity: 1;
 }
 button>img {
