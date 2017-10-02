@@ -406,6 +406,7 @@ Code.init = function() {
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
   Code.bindClick('runButton', Code.runJS);
+  Code.bindClick('stepButton', Code.stepJS);
   Code.bindClick('saveButton', Code.saveBlocks);
   Code.bindClick('openButton', Code.openFromDisk);
   // Disable the link button if page isn't backed by App Engine storage.
@@ -519,12 +520,18 @@ Code.openFromDisk = function() {
 	pom.click();
 };
 
+Code.stepJS = function() {
+  Code.parseCode();
+  Code.stepCode();
+};
+
+
 /**
- * Execute the user's code.
+ * Continuously run the code, the program is saved to recover from an infinite loop
  */
 Code.runJS = function() {
+  Code.saveBlocks();
   Code.parseCode();
-  //Code.stepCode();
   Code.runCode();
 };
 
