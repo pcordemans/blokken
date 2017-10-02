@@ -524,7 +524,8 @@ Code.openFromDisk = function() {
  */
 Code.runJS = function() {
   Code.parseCode();
-  Code.stepCode();
+  //Code.stepCode();
+  Code.runCode();
 };
 
 /**
@@ -572,6 +573,10 @@ Code.parseCode = function() {
         Code.highlightPause = false;
         Code.workspace.highlightBlock(null);
       };
+
+Code.runCode = function() {
+  Code.interpreter.run();
+}
 
 Code.stepCode = function() {
         try {
