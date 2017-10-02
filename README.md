@@ -10,8 +10,8 @@ Clone the repository or download all files and open _index.html_.
 ## Features
 
 * Programming: drag blocks from the **Blocks** menu to the workspace. Execute the program with the green or red run button.
-  * The green run button is a save run button, which allows to interrupt infinite loops.
-  * The red run button continuously executes the code. Interrupting an infinite loop is not possible. The program must be saved before running the program. 
+  * The green run button steps through the code.
+  * The red run button continuously executes the code. Interrupting an infinite loop is not possible. Save the program to avoid losing it. 
 * Navigation: Zoom and center.
 * View the corresponding JavaScript code.
 * Save the current program to an _.xml_ file and load a program from xml
