@@ -21,5 +21,4 @@ Clone the repository or download all files and open _index.html_.
 
 Blokken is based on [Blockly](https://developers.google.com/blockly/), a library for visual programming by Google.
 
-Blokken is used as an [introduction to programming](https://onderwijsaanbod.kuleuven.be/syllabi/n/B3152RN.htm#activetab=doelstellingen_idp555376) at KU Leuven faculty of engineering technology, campus Brugge.
-  It is maintained by prof. Hans Hallez and Piet Cordemans.
+Blokken is no longer actively used by its original maintainer. However, it can still be used and contributions through pull requests are accepted.
